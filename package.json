@@ -1,0 +1,9 @@
+{
+    "name": "main",
+    "version": "1.0.0",
+    "scripts": {
+      "start": "streamlit run app.py"
+    },
+    "dependencies": {}
+  }
+  
