@@ -6,10 +6,10 @@ from tts import response_text_to_speech
 from chatbot import get_response
 
 # # Load environment variables from the .env file
-# dotenv.load_dotenv()
+dotenv.load_dotenv()
 
 # Retrieve API key from environment variables
-api_key = st.secrets["api"]["GORQ_API_KEY"]
+api_key = os.getenv("GORQ_API_KEY")
 
 # Check if the API key is available
 if api_key:

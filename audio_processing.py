@@ -1,7 +1,4 @@
-import sounddevice as sd
 import speech_recognition as sr
-import numpy as np
-import wavio
 import streamlit as st
 import os
 
@@ -9,24 +6,35 @@ import os
 UPLOAD_DIR = "audio"
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
-def record_audio(filename, duration=20, samplerate=44100):
-    """
-    Record audio from the microphone and save it as a WAV file.
+
+
+    
+def record_audio(filename, duration=20):
+    """Record audio from the microphone and save it as a WAV file.
 
     Args:
         filename (str): Path where the recorded audio file will be saved.
         duration (int): Maximum duration (in seconds) to record audio. Default is 20 seconds.
-        samplerate (int): Sample rate for the recording. Default is 44100 Hz.
     """
-    # st.info("Recording... 🎙️")
-    # Record audio from the microphone
-    audio = sd.rec(int(duration * samplerate), samplerate=samplerate, channels=2, dtype='int16')
-    sd.wait()  # Wait until the recording is finished
+    # Create an instance of the Recognizer class
+    recognizer = sr.Recognizer()
     
-    # Save the recorded audio data to a directory
-    filename = f"{UPLOAD_DIR}/{filename}"
-    wavio.write(filename, audio, samplerate, sampwidth=2)
-    # st.info("Recording complete.")
+    # Create an instance of the Microphone class
+    mic = sr.Microphone()
+
+    # Open the microphone and start recording
+    with mic as source:
+        # Adjust for ambient noise to improve accuracy
+        recognizer.adjust_for_ambient_noise(source)
+        st.info("Listening... 🎙️")
+        
+        # Record audio from the microphone with a specified timeout
+        audio = recognizer.listen(source, timeout=duration)
+        
+        # Save the recorded audio data to a file in the UPLOAD_DIR directory
+        file_path = os.path.join(UPLOAD_DIR, filename)
+        with open(file_path, "wb") as f:
+            f.write(audio.get_wav_data())
         
     
 
