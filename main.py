@@ -9,7 +9,7 @@ from chatbot import get_response
 dotenv.load_dotenv()
 
 # Retrieve API key from environment variables
-api_key = os.getenv("GORQ_API_KEY")
+api_key = st.secrets["api_key"]["GORQ_API_KEY"]
 
 # Check if the API key is available
 if api_key:
